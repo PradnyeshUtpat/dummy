@@ -1,6 +1,4 @@
-//DSA SY Project - SEM 4
-//by - Rohaan Advani - 111903151
-// Main/Try File - Runs the program
+//Pradnyesh Utpat
 
 //Include Libraries and Files
 #include <stdio.h>
