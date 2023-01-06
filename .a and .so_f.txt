@@ -1,0 +1,22 @@
+.so files are dynamic libraries. The suffix stands for "shared object", because all the applications that are linked with the library use the same file, rather than making a copy in the resulting executable.
+
+.a files are static libraries. The suffix stands for "archive", because they're actually just an archive (made with the ar command -- a predecessor of tar that's now just used for making libraries) of the original .o object files.
+
+.la files are text files used by the GNU "libtools" package to describe the files that make up the corresponding library. You can find more information about them in this question: What are libtool's .la file for?
+
+Static vs Dynamic
+Static
+Pro: The user always uses the version of the library that you've tested with your application, so there shouldn't be any surprising compatibility problems.
+
+Con: If a problem is fixed in a library, you need to redistribute your application to take advantage of it. However, unless it's a library that users are likely to update on their own, you'd might need to do this anyway.
+
+Dynamic
+Pro: Your process's memory footprint is smaller, because the memory used for the library is amortized among all the processes using the library.
+
+Pro: Libraries can be loaded on demand at run time; this is good for plugins, so you don't have to choose the plugins to be used when compiling and installing the software. New plugins can be added on the fly.
+
+Con: The library might not exist on the system where someone is trying to install the application, or they might have a version that's not compatible with the application. To mitigate this, the application package might need to include a copy of the library, so it can install it if necessary. This is also often mitigated by package managers, which can download and install any necessary dependencies.
+
+Con: Link-Time Optimization is generally not possible, so there could possibly be efficiency implications in high-performance applications. See the Wikipedia discussion of WPO and LTO.
+
+Dynamic libraries are especially useful for system libraries, like libc. These libraries often need to include code that's dependent on the specific OS and version, because kernel interfaces have changed. If you link a program with a static system library, it will only run on the version of the OS that this library version was written for. But if you use a dynamic library, it will automatically pick up the library that's installed on the system you run on.
